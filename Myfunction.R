@@ -1,3 +1,4 @@
+
 ##' .. content for \description{} (no empty lines) ..
 ##'
 ##' .. content for \details{} ..
@@ -7,9 +8,8 @@
 ##' @return 
 ##' @author Ettabib Mohammad
 h <- function(u,T=T){
-    return (1/sqrt(2*pi)*exp(-(u-x)^2/(2*T)))
+  return (1/sqrt(2*pi)*exp(-(u-x)^2/(2*T)))
 }
-
 
 
 ##' .. content for \description{} (no empty lines) ..
@@ -67,7 +67,7 @@ Algorithme.1 <- function(X=x,T0=0,T1=T,PAS=2^-4){
     res$U.index <- c()
     res$phi.Z <- c()
     while(TRUE){     
-                                        #browser()
+        #browser()
         N <- c()
         M <- c()
         U <- c()
@@ -97,12 +97,15 @@ Algorithme.1 <- function(X=x,T0=0,T1=T,PAS=2^-4){
     }
 }
 
+
+
+
 library(statmod)
 dens.inv.invgauss <- function(mu,lambda,u){
     return (sqrt(lambda/(2*pi*u))*exp(lambda/(2*mu))*exp(-lambda/(2*mu^2)*(1/u+u*mu^2)))
 }
 
-g <- function(u,lambda){
+g <- function(u,lambda) {
     return (-lambda/2*exp(-lambda/2*u))
 }
 
@@ -118,15 +121,15 @@ rinv.invgauss <- function(n=1,mu,lambda){
     }
 }
 
-Algorithme.min.2 <- function(a,b,T){
+Algorithme.min.2 <- function(a,T,X0=X0){
     #browser()  
-  c1=(a-b)^2/T
-    c2=b^2/(2*T)
-    while(TRUE){
         U <- runif(n=1,min=0,max=1)
-        Z1 <- (a-sqrt(2*rexp(n=1,rate=1)+a^2))/2
+        Z1 <- (a-sqrt(2*T*rexp(n=1,rate=1)+a^2))/2
+        b <- Z1
+        c1=(a-b)^2/T
+        c2=b^2/(2*T)
         I1 <- rinvgauss(n=1,mu=sqrt(c1/c2),lambda=2*c1)
-        I2 <- rinv.invgauss(n=1,mu=sqrt(c2/c1),2*c2)
+        I2 <- rinv.invgauss(n=1,mu=sqrt(c2/c1),lambda=2*c2)
         if(U < (1+sqrt(c1/c2))^-1){
             V <- I1
         }else{
@@ -134,15 +137,64 @@ Algorithme.min.2 <- function(a,b,T){
         }
         Z2=T/(1+V)
         res <- c()
-        res$min <- Z1
+        res$min <- Z1 + X0
         res$t.min <- Z2
         return (res)
-    }
 }
-## Z <- Algorithme.1()
-## plot(Z,type="l")
 
+R <- function(t,delta){
+  W.br.1 <- rnorm(n=1,mean=0,sd=sqrt(t))-t*rnorm(n=1,mean=0,sd=1)
+  W.br.2 <- rnorm(n=1,mean=0,sd=sqrt(t))-t*rnorm(n=1,mean=0,sd=1)
+  W.br.3 <- rnorm(n=1,mean=0,sd=sqrt(t))-t*rnorm(n=1,mean=0,sd=1)
+  return (sqrt((delta*t*W.br.1)^2+(W.br.2)^2+(W.br.3)^2))
+}
+##' .. content for \description{} (no empty lines) ..
+##'
+##' .. content for \details{} ..
+##' @title 
+##' @param mT the minimum
+##' @param theta the time at minimum
+##' @param WT the final point of the brownian motion
+##' @param s the times of discretization
+##' @return 
+##' @author Mohammad
+decompose <- function(mT,theta,WT,s){
+  S <- sort(s)
+  Z <- c()
+  for(i in 1:length(S)){
+    delta.1 <- -mT/sqrt(theta)
+    delta.2 <- (WT-mT)/sqrt(T-theta)
+    if(S[i]<= theta){
+      Z[i] <- sqrt(theta)*R(delta=delta.1,t=(theta-S[i])/theta)+mT
+    }else{
+      Z[i] <- sqrt(T-theta)*R(delta=delta.2,t=(S[i]-theta)/(T-theta))+mT
+    }
+  }
+  return (Z)
+}
 
+Algorithme.2 <-function(T0=0,T=T,PAS=2^-4){
+  while(TRUE){
+  Z <- c()
+  # draw the ending point ZT of the process Z with respect to the density h
+  Z.T <- sim.h()
+  # simulate th minimum m of the process Z giving Z.T
+  m <- Algorithme.min.2(a=Z.T,T=T,X0=X0)
+  #Fix an upper bound M(m)
+  M.m <- Max.phi(m$min)-min.phi
+  #Draw N with poisson distribution T*M
+  N <- rpois(n=1,lambda=T*M.m)
+  U <- runif(n=N,min=0,max=T)
+  V <- runif(n=N,min=0,max=M.m)
+  # Fill in the path of Z at the remaining times U
+  i=floor((U-T0)/PAS)+1
+  Z <- decompose(mT=m$min,theta=m$t.min,WT=Z.T,s=U)
+  # evaluate the number of points under M.m
+  if(prod(phi(Z)-min.phi<V)==1){
+    return (Z)
+   }
+  }
+}
 
 
 
