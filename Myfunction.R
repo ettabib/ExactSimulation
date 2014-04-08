@@ -34,12 +34,12 @@ sim.h <- function(n=1){
 ##' @param t1 
 ##' @return path as vector
 ##' @author Ettabib Mohammad
-sim.path.brow.t0.t1 <- function(x,y,t0,t1,pas){
+sim.path.brow.t0.t1 <- function(X,Y,t0,t1,pas){
     if (t1-t0>pas){
         sigma = sqrt(t1 - t0) / 2
-        Y <- rnorm(n = 1,mean = (x + y) / 2,sd = sigma)
-        pathl <- sim.path.brow.t0.t1(x = x,y = Y,t0 = t0,t1 = (t0 + t1) / 2,pas = pas)
-        pathr <- sim.path.brow.t0.t1(x = Y,y = y,t0=(t0 + t1) / 2,t1 = t1,pas = pas)
+        Y <- rnorm(n = 1,mean = (X + Y) / 2,sd = sigma)
+        pathl <- sim.path.brow.t0.t1(X = X,Y = Y,t0 = t0,t1 = (t0 + t1) / 2,pas = pas)
+        pathr <- sim.path.brow.t0.t1(X = Y,Y = Y,t0=(t0 + t1) / 2,t1 = t1,pas = pas)
         return (c(pathl,Y,pathr))
     }else{
         return (c())
@@ -196,5 +196,15 @@ Algorithme.2 <-function(T0=0,T=T,PAS=2^-4){
   }
 }
 
-
-
+Algorithme.1.bis <- function(N=1000,T=1,x0=X0){
+  while(TRUE){
+    N <- rpois(n=1,lambda=T*Max.phi(0))
+    U <- runif(n=N,min=0,max=T)
+    V <- runif(n=N,min=0,max=Max.phi(0))
+    Z.T <- sim.h()
+    Z <- sim.path.brow.t0.t1(X=x0,Y=Z.T,t0=0,t1=T,pas=T/N)
+    if(prod(phi(Z)-min.phi<V)==1){
+      return (Z)
+    }
+  }
+}

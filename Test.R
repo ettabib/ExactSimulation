@@ -9,7 +9,7 @@ Z <- Algorithme.2()
 plot(Z$phi.Z-min.phi,type="l")
 plot(Z$Z,type="l")
 points(y=Z$V,x=Z$U.index)
-N=2^10
+N=10000
 X <- euler(N=N,alpha=a,X0=100,T=1)
 plot(X,type="l")
 mean(Z$Z)
