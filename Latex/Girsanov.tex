@@ -1,0 +1,257 @@
+\section{a Brief Introduction of Girsanov's theoreme}
+\label{sec:brief-intr-girs}
+Before introducing the exact algorithm of beskos we have to remaind some notions :
+\begin{de}[Stochastic integral]
+  \index{Stochastic integral}
+
+\end{de}
+
+\begin{thm}
+\label{int-stoc:1}
+  Let  $X$ be  a continued  martingal and  $H \in  b\Pi$ (  the set  of
+  predictable bounded process ), then $(H \cdot X)_t$ is a continued martingal.
+\end{thm}
+
+\begin{thm}
+\label{int-stoc:2}
+  Let X, Y continued bounded martingals and $H,Y \in b\Pi$ then :
+\[
+\langle H  \cdot X , K  \cdot Y \rangle =  \int^t_0 H_s K_s d\langle  X_s, Y_s
+\rangle_s
+\]
+\end{thm}
+\subsection{Ito formula}
+
+The Ito's process are all the process that have the shape :
+\[
+X_t = x + \int_0^{t} b_s ds + \int_0^{t} \sigma_s dW_s
+\]
+Where $b$  is an $\mathcal{F}^W_t$-adapted process  with : $\int_0^t |b_s|  ds <
++\infty $ 
+\begin{prop}
+\label{ito}
+\index{Ito's formula}
+Let $(X_{t})$ be a continuous local martingale and $f \in \mathcal{C}^{2}(\mathbb{R})$, then we have $\forall t \geq 0$ :
+\begin{eqnarray*}
+f(X_{t}) & = & f(X_{0})+(f'(X_{t}).X)_{t}+\frac{1}{2}\int_0^t f''(X_{s}) \, \mathrm d\langle X\rangle_s \\
+  & = & f(X_{0})+\int_0^t f'(X) \, \mathrm dX +\frac{1}{2}\int_0^t f''(X_{s}) \, \mathrm d\langle X\rangle_s 
+\end{eqnarray*}
+we write in a differential forme : 
+\begin{equation*}
+ df(X_{t})=f'(X_{t}) dX_{t} + \frac{1}{2} f''(X_{s}) d\langle X\rangle_s
+\end{equation*}
+\label{ito}
+\end{prop}
+
+\subsection{Girsanov theorem}
+
+We will  presente some  notions that  will simplifies  the understanding  of the
+Girsanov's theorem
+
+\begin{prop}[Exponnential local Martingale]
+  Let X a local continued martingale then :
+\[
+\mathcal{E}(X)_t:=exp(X_t-\frac{1}{2}\langle X \rangle_t )
+\]
+is local martingale
+\end{prop}
+
+In a more restrictive assumption :
+\begin{thm}
+\label{exp-mrtg:1}
+  Let $X_t$ a  local martingal that verifies  : $\exists K > 0  \textrm{ tel que}~\langle  X  \rangle_t  \leq  Kt$  and $X_0=0$. 
+	Then $\mathcal{E}(X_t)$  is  a martingal.
+\end{thm}
+
+This last theorem will lead us to a legitim definition :
+\begin{de}[Stochastic exponential]
+\label{Stochastic exponential}
+\index{Stochastic exponential}
+Let $M$, $M_{0}=0$ be a $(\mathcal{F})$-martingale (local).
+\newline
+Let be $K > 0$ such as $\langle M\rangle_{t}\leq K_{t}   \forall t \in [0,T]$ ($\mathbb{P}-a.s$)
+\newline
+We define $\mathcal{E}(M)$ the stochastic exponential of M by :
+\newline
+\begin{equation}
+\mathcal{E}(M)_{t}=exp\left(M_{t}-\frac{1}{2}\langle M\rangle_{t}\right)
+\label{expo}
+\end{equation}
+\end{de}
+
+
+\begin{de}[Martingale mesure]
+\label{Martingale mesure}
+\index{index}
+Let $M$, $M_{0}=0$ be a $(\mathcal{F})$-martingale (local).
+\newline
+Let be $K > 0$ such as $\langle M\rangle_{t}\leq K_{t}   \forall t \in [0,T]$.
+\newline
+Let $\mathcal{E}(M)=(\mathcal{E}(M)_{t})_{t}$ be the stochastic exponential of M with respect to $\mathbb{P}$
+Then the martingale measure with respect to $M$, $\tilde{\mathbb{P}}_{T}$, is the probability measure defined on $(\omega,\mathcal{F}_{T})$ by : $\forall A \in \mathcal{F}_{T}$
+\newline
+\begin{equation}
+\tilde{\mathbb{P}}_{T}(A)=\mathbb{E}_{\mathbb{P}}(\mathds{1}_{A}\mathcal{E}(M)_{T})
+\label{ptilde}
+\end{equation}
+
+\end{de}
+
+
+\begin{prop}[Girsanov theorem]
+\label{Girsanov theorem}
+\index{index}
+Let $M$, $M_{0}=0$ be a $(\mathcal{F})$-martingale (local).
+\newline
+Let be $K > 0$ such as $\langle M\rangle_{t}\leq Kt$,  $\forall t \in [0,T]$.
+\newline
+Let $\tilde{\mathbb{P}}_{T}$ be the martingale measure.
+\newline
+\newline
+If $Y_t \in [0,T]$ is a $(\mathcal{F})_{t \in [0,T]}$-martingale under $\mathbb{P}$
+\newline
+Then $(Y_t-\langle M,Y\rangle_{t})_{\in [0,T]}$ is a $(\mathcal{F})_{t \in [0,T]}$-martingale under $\tilde{\mathbb{P}}_{T}$
+\end{prop}
+
+
+
+\begin{prop}[Levy theorem]
+\label{Levy-theorem}
+$X$,$X_{0}=0$ is a stochastic brownian motion if and only if it is a continuous local martingale such as $\langle X\rangle_{t}=t$
+\end{prop}
+
+
+Let's  enonciate an  other  version  of the  Girsanov's  theorem  for the  Ito's
+process:
+\begin{thm}[Girsanov theorem for Ito's process]
+\label{Girs-thm-ito}
+  Let $(X_t)$  a continued process $()\mathcal(F)_t)-adapted$  such as $\int^t_0
+  X_sds < \infty $ $\mathcal{P}$ almost surly. Let's :
+  
+\end{thm}
+\section{Application}
+Let's study the following SDE :
+
+\[
+\begin{cases}
+dX_{t}= & a(t,X_{t})dt+dW_{t}\\
+X_{0}= & x
+\end{cases}
+\]
+Where $b:\mathbb{R^+} \times \mathbb{R}  \rightarrow \mathbb{R}$ continued in t,
+lipchitzian in x, and $W_t$ an S.B.M under \mathbb{P}.\\
+The Ito's theorem insures  the existence and the uniqueness of  a solution X. We
+have then :
+
+
+\[
+X_{t}-X_{0}=\int_0^t  \, \mathrm dW_s + \int_0^t a(X_{s}) \, \mathrm ds
+\]
+
+\begin{equation}
+X_{t}-X_{0}=\int_0^t a(X_{s}) \, \mathrm ds + W_t
+\label{exemple}
+\end{equation}
+
+The Girsanov Theorem \ref{Girsanov theorem} say's that if $M$
+ is a  martingale under  $\mathbb{P} $ such  that $\langle  M\rangle_{t}\leq Kt$
+ then   $W_t   -  \langle   M   ,   W  \rangle_t   $   is   a  martingal   under
+ $\tilde{\mathbb{P}}_T$.\\
+   we have to find a ``Good'' martingal M which verifies :
+\[
+\langle M, W \rangle_t = \int^t_0 a(s,X_s) ds
+\]
+
+ \begin{example}[Idea]
+   this condition  is completly satisfied  with : $  M_t=-\int^t_0a(s,X_s)dW_s $
+   \footnote{$M_t$ is a martingal because it's a stochastic integral}
+ \end{example}
+We  have then  to make  sure that  $\langle M\rangle_{t}\leq  Kt$, and  this can
+easily take place if a is bounded. we will have then 
+\[
+\int^t_0 \mathbb{E}(a(s,X_s)^2) ds \leq K^2t < \infty
+\]
+
+Then $H_s:=b(s,X_s)\in \Pi_2(W)$ so $M_t$ is a martingale.
+We can then apply the Girsanov theorem :
+
+
+\begin{prop}
+\label{Girsanov:2}
+  if $ \exists K >0,~\int^t_0 b(s,X_s)  \leq Kt$ then the process $(X_t)$ solution
+  of :
+  \[
+\begin{cases}
+dX_{t}= & a(t,X_{t})dt+dW_{t}\\
+X_{0}= & 0
+\end{cases}
+\]
+verifies :
+\begin{itemize}[(i)]
+\item  $(X_t)_{t\in[0,T]}$  is  a  $(\mathcal{F}_{t\in[0,T]})-martingale$  under
+  $\tilde{\mathbb{P}}_T$.
+\item    $\langle    X   \rangle_t=t    $    so    $(X_t)_{t\in[0,T]}$   is    a
+  $(\mathcal{F}_{t\in[0,T]})-S.B.M$ under   $\tilde{\mathbb{P}}_T$.
+\end{itemize}
+\end{prop}
+
+\begin{proof}
+  we have that
+\[
+X_t=X_t-X_0=W_t - \langle M, W \rangle_t
+\]
+so $\langle X \rangle_t = t$. Because of Levy's theorem \ref{Levy-theorem} $X_t$
+is then a S.B.M.
+\end{proof}
+\newline
+$Y_t=W_t$
+\newline
+\newline
+One have :
+\newline
+$M_{0}=0$
+\newline
+$(W)_t \in [0,T]$ is a brownian motion because it is a $(\mathcal{F})_{t \in [0,T]}$-martingale under $\mathbb{P}$
+\newline
+\newline
+Then we get : 
+\newline
+$((W)_t-\langle M,W\rangle_{t})_{\in [0,T]}$ is a $(\mathcal{F})_{t \in [0,T]}$-martingale under $\tilde{\mathbb{P}}_{T}$
+\newline
+\begin{eqnarray*}
+W_{t}-\langle M,W\rangle_{t} &=& W_{t}+\int_0^t a(X_{t}) \, \mathrm ds \\
+&=& X_{t}-X_{0}
+\end{eqnarray*}
+
+
+One can now calculate the stochastic exponential, define by \ref{Stochastic exponential} :
+\newline
+
+
+So :
+
+
+$\mathcal{E}(M)=(\mathcal{E}(M)_{t})_{t}$ be the stochastic exponential of M with respect to $\mathbb{P}$, one can now find the martingale measure, $\tilde{\mathbb{P}}_{T}$ define by \ref{Martingale mesure} :
+\newline
+$\tilde{\mathbb{P}}_{T}(A)=\mathbb{E}_{\mathbb{P}}(\mathds{1}_{A}\mathcal{E}(M)_{T})$
+\newline
+
+One can reconize the definition of the RN derivative.
+Indeed, the stochastic exponentielle is the RN derivative, we use to denote : $\frac{d \tilde{\mathbb{P}}}{d\mathbb{P}}$
+\newline
+The stochastic exponential is a continous variable, then one have :
+\newline
+
+Moreover,
+\newline
+\begin{eqnarray*}
+\langle \xi{t}-\xi{0}\rangle_{t}&=&\langle \int_0^t a(\xi_{t}) \, \mathrm dt + W_t\rangle_{t} \\
+&=&\langle \int_0^t a(\xi_{t}) \, \mathrm dt \rangle_{t}+\langle  W_t\rangle_{t} \\
+&=&\langle  W_t\rangle_{t} \\
+&=&t
+\end{eqnarray*}
+
+By Levy theorem \ref{Levy theorem}, one know that $\xi{t}-\xi{0}$ is a brownian motion, so $\tilde{\mathbb{P}}$ is a browian mesure.
+\newline
+If we denote : $\mathbb{Q_{X}}$, the law of the process $X$, and $\mathbb{W^{X}}$ the low of the brownian motion. One now have :
+\newline

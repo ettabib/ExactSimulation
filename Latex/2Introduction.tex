@@ -1,0 +1,36 @@
+
+\section{Introduction}
+\label{sec:introduction}
+
+\quad The application of diffusion models are ubiquitous in several areas, including
+finance, physics, biology  and engineering. In many cases the  evolution of some
+phenomenons are described by a stochastic process $X=\{X_t,0<t<T\}$, determined as
+the solution of a stochastic differential equation of the type :
+
+
+\begin{equation}
+  \label{eq:1}
+\left
+  \begin{cases}
+      dX_t = b(X_t)dt+\sigma(X_t)dW_t \\
+      X_0=x \in \mathbb{R}, ~ t \in [0,T]
+  \end{cases}
+\right
+\end{equation}
+
+Except for  the case  of the  black school  model, we  generally don't  know the
+solution  of  this   equations,  althougt  the  simulation  of   a  solution  is
+fondamental.\\
+The  numerical methods  provide  us an  approximation of  the  solution. We  can
+therefore compute  in practice  a quite satisfaing  solutions. Indeed  the Euler
+scheme is,  for this  purpose, very usefull.  Unfotunately, this  method suffers
+from  some limitations,  in the  way that  it introduce  2 types  of errors  (cf
+\ref{error-euler}).\\
+Recently  (2005-2006)  \cite{Beskos-Simu-exact},  Beskos  has  presented,  a  new
+algorithme to compute a solution for some diffusion process, specially in the black
+school case. \\
+
+The purpose of this project is to present this new algorithme.
+
+
+

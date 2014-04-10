@@ -1,0 +1,29 @@
+
+\section{Numerical Tests }
+\label{sec:numerical-tests-}
+
+
+In this section we compare the Euler method with the exact algorithme of simulation. On consider the following SDE :
+\begin{equation}
+  \label{eq:1}
+  dX_t = \sin(X_t) dt + dW_t 
+\end{equation}
+
+\subsection{The Euler method}
+\label{sec:euler-method}
+
+The Euler scheme is then :
+
+\begin{center}
+  \begin{equation}
+  \label{eq:2}
+  \left
+    \begin{cases}
+      X_0^N & =X_0\\
+      X_{t_{i+1}}^N & = X_{t_i}^N + \sin(X_{t_i}^N)\frac{T}{N}+(W_{t_{i+1}}-W_{t_i})
+    \end{cases}\\
+$ (W_{t_{i+1}}-W_{t_i}) \sim \mathcal{N}(0,\frac{T}{N})$
+\end{equation}
+\end{center}
+
+

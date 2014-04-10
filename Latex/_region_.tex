@@ -1,0 +1,44 @@
+\message{ !name(rapport.tex)}\documentclass{Math}
+\usepackage[nottoc, notlof, notlot]{tocbibind}
+\makeatletter
+\def\maketitle{%
+  \null
+  \thispagestyle{empty}%
+  \vfill
+  \begin{center}\leavevmode
+    \normalfont
+    {\LARGE \@title\par}%
+    \vskip 1cm
+    {\Large \@author\par}%
+    \vskip 1cm
+    {\Large \@date\par}%
+  \end{center}%
+  \vfill
+  \null
+  \cleardoublepage
+  }
+\makeatother
+\author{Mohammed Ettabib, Fabrice Barbe, Antoine Tastavy}
+\title{Rapport TER : Simulation exacte de processus de diffusion}
+\begin{document}
+
+\message{ !name(rapport.tex) !offset(-3) }
+
+\maketitle
+\tableofcontents
+\include{Introduction}
+\include{EulerMaruyama}
+\include{RejectionSampling}
+\include{Girsanov}
+\include{Exact}
+\include{NumericalTests}
+\include{AsianCas1}
+\include{Conclusion}
+\include{Appendix}
+\printindex
+\bibliographystyle{alpha}
+\bibliography{biblio}
+\end{document}
+
+
+\message{ !name(rapport.tex) !offset(-44) }

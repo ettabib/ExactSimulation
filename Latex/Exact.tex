@@ -1,0 +1,395 @@
+% Aperçu corps
+
+
+\section{Exact simulation method}
+
+Let's remind our main equation : 
+
+\begin{equation}
+\begin{cases}
+d\xi_{t}= & b(\xi_{t})dt+\sigma(\xi_{t})dW_{t}\\
+\xi_{0}= & x
+\end{cases}\label{eq:1}
+\end{equation}
+
+
+where $b$ (the drift) and $\sigma$ are two scalar functions that
+are presumed to satisfy the regularity conditions (locally Lipschitz,
+with a growth bound) that guarantee the existence of a weakly unique
+global solution of \ref{eq:1}.\\
+
+
+\sauta \quad{}To simplify the equation we will introduce the transformation
+$X_{t}=\eta(\xi_{t})$ where $\eta$ is a primitive of $\frac{1}{\sigma}$
+:
+
+\[
+\eta(x)=\int_{.}^{x}\frac{1}{\sigma(u)}du
+\]
+
+
+Under the assumption that $\frac{1}{\sigma}$ is continuously differentiable,
+then $\eta\in\mathcal{C}^{2}$, one can apply the Ito's lemma \ref{ito}
+to get that :
+
+\begin{eqnarray*}
+d\eta(\xi_{t}) & = & \eta'(\xi_{t})d\xi_{t}+\frac{1}{2}\eta''(\xi_{t})d\langle\xi,\xi\rangle_{t}\\
+ & = & \frac{1}{\sigma(\xi_{t})}[a(\xi_{t})dt+b(\xi_{t})dWt]-\frac{1}{2}\frac{\sigma'(\xi_{t})}{\sigma^{2}(\xi_{t})}\sigma^{2}(\xi_{t})dt\\
+ & = & [\frac{a(\xi_{t})}{\sigma(\xi_{t})}\frac{\sigma'(\xi_{t})}{2}]dt+dW_{t}\\
+ & = & \underbrace{[\frac{a(\eta^{-1}(Xt))}{\sigma(\eta^{-1}(Xt))}-\frac{\sigma'(\eta^{-1}(Xt))}{2}]}_{a(X_{t})}dt+dW_{t}
+\end{eqnarray*}
+where $a(X_{t})=[\frac{a(\eta^{-1}(Xt))}{\sigma(\eta^{-1}(Xt))}-\frac{\sigma'(\eta^{-1}(Xt))}{2}]$
+
+Then our equation can be written :
+
+\begin{equation}
+\begin{cases}
+dX_{t} & =a(X_{t})dt+dW_{t}\\
+X_{0} & =x
+\end{cases}\label{eq:2}
+\end{equation}
+
+
+
+\subsection{Notation}
+
+\label{sec:notation}
+
+We denote by : 
+\begin{description}
+\item [{$C$}] $C([0,T],\mathbb{R})$ the set of continuous mappings from
+$[0,T]\Rigtharrow\mathbb{R}$ 
+\item [{$mathbb{Q}_{X}$}] the law of the process $(X_{t})_{t\in[0,T]}$ 
+\item [{$mathbb{Q}$}] the probability induced by the solution of (\ref{eq:1}) 
+\item [{$(W_{t}^{x})_{t\in[0,T]}$}] the Brownian motion starting on $x$ 
+\item [{$(mathbb{Q}_{W^{x}})$}] the law of the Brownian motion starting
+on $x$ 
+\item [{$mathbb{W}=tilde{P}_{T}$}] the probability measure for $W^{x}$ 
+\item [{$Y_{t}$}] the coordinate process verifying the following proposition
+: if $X$ has the law $Q_{X}$ in $(\Omega,\mathcal{F},\mathbb{P})$
+then $Y$ under $Q_{X}$ has the same law as $X$ under $\mathbb{P}$. 
+\end{description}
+\begin{example}[Assumption 1] \label{assuption-1} 
+\begin{eqnarray*}
+L_{t} & = & \mathcal{E}((a\cdot Y)_{t})\\
+ & = & \exp\Big[\int_{0}^{t}a(Y_{u})dY_{u}-\frac{1}{2}\int_{0}^{t}a^{2}(Y_{u})du\Big]
+\end{eqnarray*}
+is a martingal.\\
+ \end{example}
+
+It's sufficient to have this two following condition's to hold the
+previous assumption ( see \ref{probachange}) : 
+
+{[}(i){]} 
+\begin{itemize}
+\item Existence and uniqueness in law of a solution to the SDE \ref{eq:2} 
+\item $\forall t\in[0,T],~\int_{0}^{t}a^{2}(Y_{u})du<\infty$ $\mathcal{Q}_{X}$
+and $\mathcal{Q}_{W^{x}}$ almost surely 
+\end{itemize}
+Indeed the second condition implies that $\langle M\rangle_{t}\leq Kt$
+(with $M_{t}=-\int_{0}^{t}a(X_{t})\,\mathrm{d}W_{s}$ which is a martingal
+according to \ref{int-stoc:1}), because : 
+\[
+\langle M\rangle_{t}=\langle-\int_{0}^{\cdot}a(Y_{s})\,\mathrm{d}W_{s}\rangle_{t}=-\int_{0}^{t}a^{2}(Y_{s})\,\mathrm{d}s~\footnote{see\ref{int-stoc:2}}
+\]
+
+
+So according to the theorem \ref{exp-mrtg:1} : $\mathcal{E}(M_{t})$
+is a martingal.\\
+
+
+By applying the proposition \ref{Girsanov:2} we are sure now that
+the solution $X_{t}$ of the equation \ref{eq:2} is a S.B.M under
+$\tilde{P}_{T}=\mathbb{W}=\mathbb{Q}_{W^{x}}$.
+
+So : 
+\[
+\forall A\in(\mathcal{F}_{t}),~\tilde{\mathbb{P}}_{t}(A)=\mathbb{E}_{\mathbb{P}}(\mathds{1}_{A}\mathcal{E}(M)_{t})
+\]
+with : 
+\[
+\mathcal{E}(M)_{t}=exp\left(M_{t}-\frac{1}{2}\langle M\rangle_{t}\right)=exp\left(-\int_{0}^{t}a(\xi_{t})\,\mathrm{d}t+\frac{1}{2}\int_{0}^{t}a^{2}(\xi_{t})\,\mathrm{d}t\right)
+\]
+
+
+We can then recognize the Radon-Nikodyn derivative :
+
+\begin{eqnarray*}
+\frac{d\mathbb{P}}{d\tilde{\mathbb{P}}} & = & \frac{1}{\frac{d\tilde{\mathbb{P}}}{d\mathbb{P}}}\\
+ & = & \frac{1}{exp\left(-\int_{0}^{T}a(\xi_{t})\,\mathrm{d}t+\frac{1}{2}\int_{0}^{T}a^{2}(\xi_{t})\,\mathrm{d}t\right)}\\
+ & = & exp\left(-\left(-\int_{0}^{T}a(\xi_{t})\,\mathrm{d}t+\frac{1}{2}\int_{0}^{T}a^{2}(\xi_{t})\,\mathrm{d}t\right)\right)\\
+ & = & exp\left(\int_{0}^{T}a(\xi_{t})\,\mathrm{d}t-\frac{1}{2}\int_{0}^{T}a^{2}(\xi_{t})\,\mathrm{d}t\right)
+\end{eqnarray*}
+
+
+\begin{example}[N.B] From now on we will confuse the probability
+measure induced by a process with his law for simplification. \end{example}
+
+We have then with the notation of \cite{Simu-exat-Beskos-2}:
+
+\begin{equation}
+\frac{d\mathbb{Q_{X}}}{d\mathbb{Q}_{W^{x}}}=exp\left(\int_{0}^{T}a(\xi_{t})\,\mathrm{d}t-\frac{1}{2}\int_{0}^{T}a^{2}(\xi_{t})\,\mathrm{d}t\right)\label{mesure-change}
+\end{equation}
+
+
+Even with this transformation we still have a stochastic integral.
+So let A be the a primitive of a . We will need then the following
+assumption :
+
+\begin{example}[Assumption 2] a is continuously differentiable \end{example}
+
+So we can apply Itô's lemma \ref{ito} (page \pageref{ito}) to A,
+then we get :
+
+\[
+A(Y_{T})=A(x)+\int_{0}^{t}a(Y_{t})\,\mathrm{d}Y_{t}+\frac{1}{2}\int_{0}^{T}\alpha'(Y_{t})\,\mathrm{d}t
+\]
+
+
+So :
+
+\begin{equation}
+\frac{d\mathbb{Q}_{X}}{d\mathbb{Q}_{W^{x}}}(w)=exp\left[A(Y_{T})-A(x)-\frac{1}{2}\int_{0}^{T}a^{2}(Y_{t})+a'(Y_{t})\,\mathrm{d}t\right]\label{eq:3}
+\end{equation}
+
+
+To simulate this last quantity using the rejection sampling algorithm,
+one needs to have $exp\left[A(Y_{T})-A(x)-\frac{1}{2}\int_{0}^{T}a^{2}(Y_{t})+a'(Y_{t})\,\mathrm{d}t\right]$
+be bounded, and that implies that A be bounded. In order to get over
+this restriction we will use another candidate path $Z$ having the
+same law as $W^{x}$ excepting the last point $Z_{T}$. Indeed, this
+last point will be simulated conditionally on density $h$ chosen
+carefully.\\
+
+
+Before defining h let's announce an important proposition that will
+allowed us to make the link between the new process and the Radon-Nikodyn
+derivative defined in \ref{eq:3} :
+
+\begin{prop} Let $(I_{t})_{t\in[0,T]}$ and $(J_{t})_{t\in[0,T]}$
+be two Stochastic process with the corresponding probability measures
+$\mathbb{I},\mathbb{J}$. If $f_{I},f_{J}$ are the density of the
+ending points $I_{T},J_{T}$ respectively, identical support $\mathbb{R}$
+and if $(I|I_{T}=\alpha)\overset{d}{=}(J_{t})_{t\in[0,T]}~\forall\alpha\in\mathbb{R}$,
+then 
+\[
+\frac{d\mathbb{I}}{d\mathbb{N}}=\frac{f_{I}}{f_{J}}(Y_{T})
+\]
+\end{prop}
+
+if our choice of h is $h\propto exp(A(u)-\frac{(u-x)^{2}}{2T})$,
+then we will need the following assumption:
+
+\begin{example}[Assumption 3] the function $exp(A(u)-\frac{(u-x)^{2}}{2T})$
+is integrable \end{example} Then while the density $f_{W^{x}}$ of
+$W^{x}$ at his ending point is a normal distribution with mean x
+and variance T then we will have : 
+\[
+\frac{d\mathbb{Q}_{W^{x}}}{d\mathbb{Q}_{Z}}(w)=\frac{f_{W^{x}}}{f_{Z}}(Y_{T})=\frac{\mathcal{N}(x,T)}{h(Y_{t})}
+\]
+
+
+so one will end with :
+
+\[
+\frac{d\mathbb{Q}_{X}}{d\mathbb{Q}_{Z}}(w)=\frac{d\mathbb{Q}_{X}}{d\mathbb{Q}_{W^{x}}}(w)\frac{d\mathbb{Q}_{W^{x}}}{d\mathbb{Q}_{Z}}(w)\propto\exp\left[-\frac{1}{2}\int_{0}^{T}a^{2}(Y_{t})+a'(Y_{t})\,\mathrm{d}t\right]
+\]
+And therefore:
+
+\[
+\frac{d\mathbb{Q}_{X}}{d\mathbb{Q}_{Z}}(w)=C\exp\left[-\frac{1}{2}\int_{0}^{T}a^{2}(Y_{t})+a'(Y_{t})\,\mathrm{d}t\right]
+\]
+
+
+\begin{example}[Assumption 4]
+
+the function $\phi:x\longmapsto\frac{a^{2}(x)+a'(x)}{2}$ is bounded
+from below . 
+
+\end{example}
+
+let's denote by $k=\inf_{x\in\mathbb{R}}\phi(x)$ so we can have :
+\[
+\frac{d\mathbb{Q}_{X}}{d\mathbb{Q}_{Z}}(w)=Ce^{-rT}\exp
+\]
+
+
+But how gone we simulate this last formula ? 
+
+A great idea, introduced by Papaspilipoulos and Roberts is : if $\Phi$
+is a homogeneous Poisson process of unit intensity on the plan $[0,T]\times[0,M(\omega)]$
+where $M(\omega)$ is upper band of $\phi$ , and N the number of
+points of $\phi$ found below the graph $\{(t,\phi(Y_{t}))\};t\in[0,T]$
+then
+
+\[
+P(N=0|\omega)=\exp\left(-\int_{0}^{T}\phi(Y_{t})-k\dt\right)
+\]
+
+
+this idea will allow us to use the condition $N=0$ as a the rejection
+condition in the rejection sampling algorithm. therefore we can announce
+a first version of the exact algorithm :
+
+\begin{example}[Algorithme 1]
+\begin{enumerate}
+\item simulating the final point $Z_{T}\sim h$ 
+\item produce a realization $(x_{i})_{i}\in[1,\theta]$ of the process $\Phi$
+on $[0,T]\times[0,M(\omega)]$ with $M$ the maximum of the function
+$\tilde{\phi}:=\phi-k$. This can be done practically by simulating
+$\theta\sim\mathcal{P}(TM(\omega))$ and then simulating a realization
+of independent uniform variables $(U_{i},V_{i})_{i\in[1,\theta]}$
+on $[0,T]\times[0,M(\omega)]$
+\item simulate a skeleton $(Z|Z_{T}\sim h)$ at $(U_{i})_{i\in[0,\theta]}$. 
+\item evaluate the number N of points $V_{i}$ found bellow the skelton
+:
+
+\begin{enumerate}
+\item if N = 0 then return to step 1
+\item else output the current skeleton 
+\end{enumerate}
+\end{enumerate}
+\end{example}
+
+however this algorithme still need some explanations.
+
+
+\subsection{Description of the algorithme}
+
+
+\subsubsection{Simulation of h:}
+
+the objective is to simulate $h(x)\varpropto exp(A(x)-\frac{(x-X_{0})^{2}}{2T})$
+with $A(x)=\frac{\gamma}{\sigma}x+\frac{\beta S_{0}}{\sigma}(1-e^{-\sigma x})$
+using rejection sampling . The problem that we might find is that
+this law grows very quickly.\\
+ While A is unboundes, we will choose a rejection function f that
+we know simulating, so we can reduce $\frac{{h}}{f}$. Specialy a
+law which the maximum is centred . Let $u^{*}=argmax(h)$: 
+\[
+h'(u^{*})\varpropto(\frac{\gamma}{\sigma}+\frac{\beta S_{0}}{\sigma}e^{-\sigma{u^{*}}}-\frac{u^{*}-X_{0}}{T})h(u^{*})
+\]
+Because h is strictly positive we will have: 
+\[
+\frac{\gamma}{\sigma}+\frac{\beta S_{0}}{\sigma}e^{-\sigma{u^{*}}}-\frac{u^{*}-X_{0}}{T}=0
+\]
+This expression can be written as : 
+\[
+\sigma(u^{*}-X_{0}-\frac{\gamma}{\sigma})e^{(u^{*}-X_{0}-\frac{\gamma}{\sigma})}=T\beta{S_{0}}e^{-\sigma{X_{0}-\gamma{T}}}
+\]
+
+
+the function $x\rightarrow xe^{x}$ is continued and strictly grows
+on $[0,+\infty]$ then it's an invertible function. this function
+is called in litterature Walambert function (see \cite{Walambert})
+.  Under the condition $T\beta{S_{0}}e^{-\sigma{X_{0}-\gamma{T}}}\geq0$,
+We Will have 
+\[
+u^{*}=\frac{\gamma{T}+W(T\beta{S_{0}}e^{-\sigma{X_{0}-\gamma{T}}})}{\sigma}+X_{0}
+\]
+An appropriate choice of f will be a normal distribution with mean
+$u^{*}$ and variance $T$ .
+
+We will know establish the rejection condition :
+
+Let's $f(z,u^{*},T)$ be this distribution : 
+\[
+\frac{h(z)}{f(z,u^{*},T)}\varpropto exp(A(z)+\frac{(z-u^{*})^{2}}{2T}-\frac{(z-X_{0})^{2}}{2T})
+\]
+this can be written 
+\[
+\frac{(z-u^{*})^{2}}{2T}-\frac{(z-X_{0})^{2}}{2T}=-\frac{(z-X_{0})(u^{*}-X_{0})}{T}+(\frac{u^{*}-X_{0}}{2T})^{2}
+\]
+by the definition of $u^{*}$, we get : 
+\[
+\frac{\gamma}{\sigma}+\frac{\beta{S_{0}}}{\sigma}{e^{-\sigma{x}}}-\frac{(u^{*}-X_{0})}{T}=0
+\]
+\[
+\frac{(u^{*}-X_{0})}{T}=\frac{\gamma}{\sigma}+\frac{\beta{S_{0}}}{\sigma}{e^{-\sigma{x}}}
+\]
+
+
+So :
+
+\[
+exp(A(z)+\frac{(z-u^{*})^{2}}{2T}-\frac{(z-X_{0})^{2}}{2T})\varpropto exp\underbrace{(\frac{\beta{S_{9}}}{\sigma}(1-e^{-\sigma{z}}-\sigma{z}e^{-\sigma{u^{*}}}))}_{g(z)}
+\]
+
+
+g is bounded and his upper bound is reached in $u^{*}$. Let's C be
+a constant that verifies : 
+\[
+C\frac{h(z)}{f(z,u^{*},T)}=exp(g(z)-g(u^{*}))<1
+\]
+so the rejection condition will be : 
+\[
+C\frac{h(z)}{f(z,u^{*},T)}=\frac{\beta{S_{0}}}{\sigma}(e^{-\sigma{u^{*}}}-e^{-\sigma*z})+(\sigma{e^{-\sigma{u^{*}}}}(u^{*}-z)
+\]
+
+
+\underline{Numerical Calculus of W} we used the sequence $w_{n}(x)$.This
+sequence converge to $W(x)$: 
+\[
+w_{n+1}=w_{n}-\frac{w_{n}e^{w_{n}}-x}{(1+w_{n})e^{w_{n}}}
+\]
+
+
+
+\subsubsection{Simulation of the biased Brownian motion}
+
+the simulation of the skeleton $(Z|Z_{T}\sim h)$ at $(U_{i})_{i\in[0,\theta]}$
+is based of simulation of biased brownian motions explained in \ref{simu-brown}
+: We simulate $\forall i\in[0,\theta]$ $(Z_{i}|Z_{i-1}=a,Z_{\theta}=b)$
+.
+
+
+\subsubsection{The problem of N \textasciitilde{} 0:}
+
+In some cases, speacially when the function $\phi$ is unbounded N
+can be near 0 so the algorithm can't give us enought points in the
+skeleton. We resolve this problem by simulating $NT$ skeltons so
+that we can fix : $M(w)=\sum_{i=1}^{NT}max(\phi)$
+
+
+\section{Application : pricing of the asian option}
+
+One are not able to determinate the solution of the first equation.
+But after all the transformation, one can Ici : noter les définiton:
+f,X,W, $\phi$, $\psi$, k,
+
+$C_{0}=\mathbb{E}_{P}(f(X_{T}))$ \\
+$C_{0}=\mathbb{E}_{Q_{Z}}\left(f(W_{T}^{x})exp\left[A(W_{t}^{x})-A(X)-\frac{1}{2}\int_{0}^{T}\alpha^{2}(W_{t}^{x})+\alpha'(W_{t}^{x})\,\mathrm{d}t\right]\right)$
+\\
+$C_{0}=\mathbb{E}_{Q_{Z}}\left(\psi(Z_{T})exp\left[\int_{0}^{T}\phi(Z_{t})\,\mathrm{d}t\right]\right)$
+\\
+Where $\psi(Z_{T})=$ \\
+$\phi(Z_{t})=$
+
+
+\section{The estimator}
+
+The estimator : $D_{0}=\psi(Z_{T})e^{-c_{T}}\frac{1}{p_{Z}(N)N!}\prod_{i=1}^{N}\frac{c_{Z}-\phi(Z_{Vi})}{q_{Z}(Vi)}$
+\\
+Proof : \\
+\\
+The average of $D_{0}$ is $C_{0}$. \\
+Indeed, when $(Z_{t})_{\left[0;T\right]}$ happen : \\
+$\mathbb{E}(D_{0})=\mathbb{E}\left(\psi(Z_{T})e^{-c_{T}}\frac{1}{p_{Z}(N)N!}\prod_{i=1}^{N}\frac{c_{Z}-\phi(Z_{Vi})}{q_{Z}(Vi)}\right)$
+\\
+$=\psi(Z_{T})e^{-c_{T}}\mathbb{E}\left(\frac{1}{p_{Z}(N)N!}\prod_{i=1}^{N}\frac{c_{Z}-\phi(Z_{Vi})}{q_{Z}(Vi)}\right)$,
+One can get the constant out of the expectation \\
+$=\psi(Z_{T})e^{-c_{T}}\sum_{n=0}^{\infty}\mathbb{E}\left(\frac{1}{p_{Z}(n)n!}\prod_{i=1}^{n}\frac{c_{Z}-\phi(Z_{Vi})}{q_{Z}(Vi)}|N=n\right)p_{Z}(n)$,
+Condition number Z= N ??? \\
+$=\psi(Z_{T})e^{-c_{T}}\sum_{n=0}^{\infty}\frac{1}{p_{Z}(n)n!}\mathbb{E}\left(\prod_{i=1}^{n}\frac{c_{Z}-\phi(Z_{Vi})}{q_{Z}(Vi)}|N=n\right)p_{Z}(n)$,
+n constant \\
+$=\psi(Z_{T})e^{-c_{T}}\sum_{n=0}^{\infty}\frac{1}{p_{Z}(n)n!}\prod_{i=1}^{n}\mathbb{E}\left(\ \frac{c_{Z}-\phi(Z_{Vi})}{q_{Z}(Vi)}\right)p_{Z}(n)$,
+iid, indép de n \\
+$=\psi(Z_{T})e^{-c_{T}}\sum_{n=0}^{\infty}\frac{1}{p_{Z}(n)n!}\left(\int_{0}^{T}\frac{c_{Z}-\phi(Z_{Vi})}{q_{Z}(Vi)}q_{Z}(Vi)\,\mathrm{d}t\right)^{n}p_{Z}(n)$
+\\
+$=\psi(Z_{T})e^{-c_{T}}\sum_{n=0}^{\infty}\frac{1}{p_{Z}(n)n!}\left(\int_{0}^{T}c_{Z}-\phi(Z_{Vi})\,\mathrm{d}t\right)^{n}p_{Z}(n)$
+\\
+$=\psi(Z_{T})e^{-c_{T}}exp\left(\int_{0}^{T}c_{Z}-\phi(Z_{Vi})\,\mathrm{d}t\right)$,
+exponential serie \\
+$=\psi(Z_{T})exp{\left(-\int_{0}^{T}\phi(Z_{Vi})\,\mathrm{d}t\right)}$
+\\
+$=C_{0}$

@@ -1,0 +1,65 @@
+
+\section{Introduction}
+\label{sec:introduction}
+In the Black-Scholes-Merton model the law of the asset is the following : 
+
+\[
+\label{starteq}
+\begin{cases}
+d\xi_{t}= & b(\xi_{t})dt+\sigma(\xi_{t})dW_{t}\\
+\xi_{0}= & \xi
+\end{cases}
+\]
+
+Where, $b$ is the drift of the function, $\sigma$ is the volatility, $\xi$ is the current price of the asset.
+\newline
+The brownian motion $W_{t}$ insert a random part, that is why we have two make a simulation.
+
+If an option on this asset is undervalued or overvalued it could be interesting for the agent to buy or sell it. So he can speculate on it. Then determine the good price of the obligation is really important. To determine this price one have to know the price of the asset.
+\newline 
+\newline 
+Then there are two cases :
+\newline
+\begin{itemize}
+\item Either the price of the option only depends on the price of the asset at the the expiration date (t=T), for example a standard "call" or "put". Then we only need the price at the expiration date to determinate the price of the option.
+\newline
+\item Either the price of the option only depends on the price of the asset from now (t=0) to the expiration date (t=T), for example for "Asian options". Then we need the entire path of price.
+\end{itemize}
+
+
+\vspace{1em}
+So to know the good price of options, we need to simulate the path of the price of the asset. We will present two different methods that give us a simulation of the whole path. More over we will present the results we obtained thanks to "R".
+
+Let present the plan :
+
+\vspace{2em}
+
+\underline{I Euler method} : 
+
+Presentation : The Euler method is the simplest way to estimate a differential equation. It is very easy to compute. However it is not an exact method: the continuous solution is approximated by a Markov process and we discretize the continuous drift a. Each random variable of this process is calculated from the previous one and an approximation is made each calculation so the error increases each time. To avoid this error, the partition of the interval should be reduced to be closed to the continuous case but it makes the method computationally expensive.
+
+Principle : We start from $\xi_{0}$, the we make an estimation to get to an other point $\xi_{t1}$. Then the result depend on the step we chose. And the bias cumulate at each step.
+
+We will simulate different thanks to "R", several path of the equation \ref{starteq} in the general framework. We will study for example a sinusoidal drift. 
+
+
+\vspace{2em}
+\underline{II Reminds} : 
+In this part we will remind some propositions we need to explain the exact method. In particular stochasic exponential and Girsanov theorem. 
+
+\vspace{2em}
+\underline{III Exact method} : 
+
+This method, a more complex one, recently presented par Beskos is an unbiased method. It needs many transformations of the Stochastic Differential Equation, using changes of probabilities with the Girsanov theorem. We will present how to process.
+ In this paper, we will study how the work of Beskos \textit{et al.} permite to remove the discretization bias.
+
+Principle : We itemize the method presented by Beskos (REF) and explain how it works. Moreover we will explain some assumption and prove the important steps.
+
+Once more, we will implement this method on "R" to get a simulated path and discuss results.
+
+\vspace{2em}
+\underline{IV compare} :
+
+Then we will discuss and compare the results we get with the Euler method and the Exact one. 
+
+

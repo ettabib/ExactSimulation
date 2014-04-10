@@ -1,0 +1,33 @@
+
+\section{Euler Maruyama Method}
+\label{sec:euler-maruy-meth}
+
+
+The Euler-Maruyama method is a generalization for the stochastic differential equation (SDE) of the Euler method which is used to compute an approximative solution for ordinary differential equations.
+\newline
+Consider the SDE$$X_t=x_0+\int_{0}^{t}a(X_s)ds+\int_{0}^{t}b(X_s)dW_s$$
+This can be rewrite in differential equation form as$$dX_t=a(X_t)dt+b(X_t)dW_t$$with the condition $X_0=x_0$.
+\newline
+This equation has an explicit solution in rare cases. The Euler-Maruyama method computes an approximate solution by relying on small time approximate increment distributions for the diffusion.
+
+This method involves to partition the interval $\left[0,T\right]$ into N subintervals bounded by the N+1 times $t_0=0,t_1,\cdots,t_N=1\in\left[0,T\right]$. We have then that, for $1\leq i\leq N$,$$X_{t_i}=X_{t_{i-1}}+\int_{t_{i-1}}^{t_i}a(X_s)ds++\int_{t_{i-1}}^{t_i}b(X_s)dW_s$$
+\newline
+For N very large and so $\left[t_{i-1},t_i\right]$ very small, we make the approximation that a et b are constant on each of these intervals.
+We then approximate the variables $X_{t_i}$ for $i=1,\cdots,N$ by the Markov process $(\overline{X}_i^N)$ defined as$$\overline{X}_i^N=\overline{X}_{i-1}^N+a(\overline{X}_{i-1}^N)(t_i-t_{i-1})+b(\overline{X}_{i-1}^N)(W_{t_i}-W_{t_{i-1}})$$with $\overline{X}_0^N=X_{t_0}=x_0$.
+\newline
+\newline
+$\left(W_t\right)_{0\leq t\leq T}$ being a brownian motion, we have that$$\forall i\in\left[|1,N|\right],W_{t_i}-W_{t_{i-1}}\sim\mathcal{N}(0,t_i-t_{i-1})$$Thus, computing $W_{t_i}-W_{t_{i-1}}$ is the same than computing a variable normally distributed with a zero mean and a variance of $t_i-t_{i-1}$.
+\newline
+\newline
+In our problem, $b(X_t)=1,\forall t$ so finally we compute $$\overline{X}_i^N=\overline{X}_{i-1}^N+a(\overline{X}_{i-1}^N)(t_i-t_{i-1})+Z_i\sqrt{t_i-t_{i-1}}$$with $Z_i$ following a standard normal distribution.
+\section{Monte-Carlo simulation}
+In general cases, we are mainly interested by the expected value of $X_T$. Having computed $(\overline{X}_i^N)_{0\leq i\leq N}$, we estimate $E(X_T)$ by $E\left(\overline{X}_N^N\right)$. However, this value is impossible to calculate and thus we approximate it using the Monte-Carlo simulation i.e.$$E\left(\overline{X}_N^N\right)\approx\frac{1}{M}\sum_{m=1}^{M}\overline{X}_{N,m}^{N,M}$$with M a large number representing the number of the Monte-Carlo simulations and $\overline{X}_{N,m}^{N,M}$ the mth Monte-Carlo simulation of $(\overline{X}_N^N)$.
+\newline
+
+The total error of these simulations split into two parts:
+\begin{equation}
+  \label{error-euler}
+  Error=\left|E(X_T)-\frac{1}{M}\sum_{m=1}^{M}\overline{X}_{N,m}^{N,M}\right|\leq\left|E(X_T)-E\left(\overline{X}_N^N\right)\right|+\left|E\left(\overline{X}_N^N\right)-\frac{1}{M}\sum_{m=1}^{M}\overline{X}_{N,m}^{N,M}\right|
+
+\end{equation}
+The first term correspond to the time-discretization error, it is the error providing from the Euler-Maruyama simulation and the second term is the statistical error, it is the error linked to the Monte-Carlo simulation. \\ The exact algorithm of Beskos avoid completly the last error.
