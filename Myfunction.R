@@ -1,27 +1,4 @@
 
-##' .. content for \description{} (no empty lines) ..
-##'
-##' .. content for \details{} ..
-##' @title  
-##' @param u 
-##' @param T  
-##' @return 
-##' @author Ettabib Mohammad
-h <- function(u,T=T){
-  return (1/sqrt(2*pi)*exp(-(u-x)^2/(2*T)))
-}
-
-
-##' .. content for \description{} (no empty lines) ..
-##'
-##' .. content for \details{} ..
-##' @title 
-##' @param n the number of realisations 
-##' @return a realisation of the function h
-##' @author Ettabib Mohammad
-sim.h <- function(n=1){
-    return (rnorm(n=n,mean=x,sd=sqrt(T)))
-}
 
 ##' .. content for \description{} (no empty lines) ..
 ##' build a 
@@ -46,7 +23,21 @@ sim.path.brow.t0.t1 <- function(X,Y,t0,t1,pas){
     }
 }
 
+sim.brow.x.y <- function(t,x,y,t0,t1){
+  m <- x * (t1-t) / (t1-t0) + y * (t-t0) / (t1-t0)
+  v <- (t-t0) * (t1-t) / (t1-t0)
+  return ( rnorm(n=1,mean=m,sd=sqrt(v)))
+}
 
+sim.brow.C <- function(x,y,Time){
+  Z <- c()
+  time <- sort(unique(Time))
+  Z[length(time)] = y; Z[1] = x;
+  for(i in 2:(length(time)-1)){
+    Z[i] <- sim.brow.x.y(t=time[i],x=Z[i-1],y=y,t0=time[i-1],t1=time[length(time)])
+  }
+  return (Z)
+}
 ## Simulation of a brownian path knowing that x and y
                                         #plot(sim.path.brow.t0.t1(x=0,y=1,t0=0,t1=1,pas=2^-10),type="l")
 
@@ -123,6 +114,7 @@ rinv.invgauss <- function(n=1,mu,lambda){
 
 Algorithme.min.2 <- function(a,T,X0=X0){
     #browser()  
+        a <- a - X0
         U <- runif(n=1,min=0,max=1)
         Z1 <- (a-sqrt(2*T*rexp(n=1,rate=1)+a^2))/2
         b <- Z1
@@ -158,16 +150,16 @@ R <- function(t,delta){
 ##' @param s the times of discretization
 ##' @return 
 ##' @author Mohammad
-decompose <- function(mT,theta,WT,s){
+decompose <- function(mT,theta,WT,s,W0){
   S <- sort(s)
   Z <- c()
   for(i in 1:length(S)){
     delta.1 <- -mT/sqrt(theta)
     delta.2 <- (WT-mT)/sqrt(T-theta)
     if(S[i]<= theta){
-      Z[i] <- sqrt(theta)*R(delta=delta.1,t=(theta-S[i])/theta)+mT
+      Z[i] <- sqrt(theta)*R(delta=delta.1,t=(theta-S[i])/theta)+mT+W0
     }else{
-      Z[i] <- sqrt(T-theta)*R(delta=delta.2,t=(S[i]-theta)/(T-theta))+mT
+      Z[i] <- sqrt(T-theta)*R(delta=delta.2,t=(S[i]-theta)/(T-theta))+mT+W0
     }
   }
   return (Z)
@@ -188,7 +180,7 @@ Algorithme.2 <-function(T0=0,T=T,PAS=2^-4){
   V <- runif(n=N,min=0,max=M.m)
   # Fill in the path of Z at the remaining times U
   i=floor((U-T0)/PAS)+1
-  Z <- decompose(mT=m$min,theta=m$t.min,WT=Z.T,s=U)
+  Z <- decompose(mT=m$min,theta=m$t.min,WT=Z.T,s=U,W0=X0)
   # evaluate the number of points under M.m
   if(prod(phi(Z)-min.phi<V)==1){
     return (Z)
@@ -196,15 +188,106 @@ Algorithme.2 <-function(T0=0,T=T,PAS=2^-4){
   }
 }
 
-Algorithme.1.bis <- function(N=1000,T=1,x0=X0){
+Algorithme.1.bis <- function(N=100,T=1,x0=X0){
   while(TRUE){
     N <- rpois(n=1,lambda=T*Max.phi(0))
     U <- runif(n=N,min=0,max=T)
     V <- runif(n=N,min=0,max=Max.phi(0))
     Z.T <- sim.h()
-    Z <- sim.path.brow.t0.t1(X=x0,Y=Z.T,t0=0,t1=T,pas=T/N)
+    
     if(prod(phi(Z)-min.phi<V)==1){
       return (Z)
     }
   }
 }
+
+Algorithme.2.bis <- function(N=100,NT=100,T=1,x0=X0){
+  Traj <- c()
+  res <- c()
+  Max=0
+  for(i in 1:NT){
+    Traj <- sim.path.brow.t0.t1(X=x0,Y=Z.T,t0=0,t1=T,pas=T/N)
+    Max <- Max + max(Traj)
+  }
+  M <- Max-min.phi
+  while(TRUE){
+    N <- rpois(n=1,lambda=T*M)
+    U <- runif(n=N,min=0,max=T)
+    V <- runif(n=N,min=0,max=M)
+    Z.T <- sim.h()
+    Z <- sim.brow.C(x=X0,y=Z.T,Time=U)
+    if(prod(phi(Z)-min.phi<V)==1){
+      res$Z <- Z
+      res$U <- U
+      res$V <- V
+      res$Max <- M
+      return (res)
+    }
+  }
+}
+
+
+### Calcul de h
+Rlambert <- function(x,N){
+  w0=1
+  N=0
+  for(i in 1:N){
+    w0=w0-(w0*exp(w0)-x)/((1+w0)*exp(w0))
+  } 
+  return (w0)
+}
+#Calcul de C
+u.etoile=(gamma * T + Rlambert( T * beta * S0 * exp(-sigma * X0  - gamma * T ))) / sigma + X0
+
+
+h <- function(u,t=T,x0=X0){
+  P0*exp(A(u)-(u-x0)^2/(2*t))
+}
+
+f.A <- function(z,u=u.etoile,T){
+  return (1/sqrt(2*pi*T)*exp(-(z-u)^2/T))
+}
+
+g.A <- function(z){
+  return ((beta*S0)/sigma*(1-exp(sigma*z)-sigma*z*exp(-sigma*u.etoile)))
+}
+
+C=f(0,u.etoile,T) * exp(g.A(0) - g.A(u.etoile)) / h(0)
+
+#algorithme de rejet
+sim.h <- function(t=T,x0=X0){
+  X=0
+  repeat{
+    U <- runif(1)
+    Y <- rnorm(1,mean=u.etoile,sd=t)
+    if (C*h(Y)/f.A(Y,u.etoile,t)>U) { X=Y;
+                                    break()}
+  } 
+  return (X)
+}
+
+
+##' .. content for \description{} (no empty lines) ..
+##'
+##' .. content for \details{} ..
+##' @title  
+##' @param u 
+##' @param T  
+##' @return 
+##' @author Ettabib Mohammad
+## h <- function(u,T=T){
+##   return (A(u)-1/sqrt(2*pi)*exp(-(u-x)^2/(2*T)))
+## }
+
+
+##' .. content for \description{} (no empty lines) ..
+##'
+##' .. content for \details{} ..
+##' @title 
+##' @param n the number of realisations 
+##' @return a realisation of the function h
+##' @author Ettabib Mohammad
+## sim.h <- function(n=1){
+##     return (rnorm(n=n,mean=x,sd=sqrt(T)))
+## }
+

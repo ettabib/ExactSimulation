@@ -5,12 +5,25 @@ source("black.R")
 source("Asian.R")
 source("Myfunction.R")
 source("Euler.R")
-Z <- Algorithme.2()
-plot(Z$phi.Z-min.phi,type="l")
-plot(Z$Z,type="l")
-points(y=Z$V,x=Z$U.index)
-N=10000
-X <- euler(N=N,alpha=a,X0=100,T=1)
-plot(X,type="l")
-mean(Z$Z)
-mean(X)
+
+### test Sin
+test.loi.euler.sin <- function(Ndisc=1000,Nsimu=100,f=a){
+  Z <- c()
+  for(i in 1:Nsimu){
+    path <- euler(N=Ndisc,alpha=f,X0=X0,T=1)
+    Z <- c(Z,path[length(path)])
+  }
+  return (Z)
+}
+
+test.loi.exat.sin <- function(Nsimu=100,Ndisc=1000){
+  Z<-c()
+  for(i in 1:Nsimu){
+    path <- Algorithme.2.bis(N=Nsimu,NT=Ndisc,T=1,x0=X0)$Z
+    Z <- c(Z,path[length(path)])
+  }
+  return (Z)
+}
+
+path.euler <- test.loi.euler.sin()
+path.exact <- test.loi.exat.sin(Nsimu=10000)
